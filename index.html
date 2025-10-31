@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baby Paint</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1 class="app__title">ベイビーペイント</h1>
+        <div class="controls">
+          <button class="control control--color" data-color="#ff5c5c" aria-label="赤">●</button>
+          <button class="control control--color" data-color="#ffd966" aria-label="黄色">●</button>
+          <button class="control control--color" data-color="#6bd58c" aria-label="緑">●</button>
+        </div>
+      </header>
+      <section class="canvas-wrapper">
+        <canvas id="paint-canvas" role="img" aria-label="おえかきキャンバス"></canvas>
+      </section>
+      <footer class="app__footer">
+        <button class="control control--hidden" id="grown-up" aria-hidden="true"></button>
+        <div class="grown-up-menu" id="grown-up-menu" hidden>
+          <button class="menu-button" id="clear-button">全消し</button>
+          <label class="toggle">
+            <input type="checkbox" id="fade-toggle" />
+            <span>線をゆっくり消す</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="sound-toggle" checked />
+            <span>効果音 ON/OFF</span>
+          </label>
+        </div>
+      </footer>
+    </main>
+    <audio id="paint-sound" preload="auto">
+      <source src="assets/sounds/pop.wav" type="audio/wav" />
+    </audio>
+    <script src="script.js"></script>
+  </body>
+</html>
