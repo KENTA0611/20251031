@@ -11,13 +11,33 @@
       <header class="app__header">
         <h1 class="app__title">ベイビーペイント</h1>
         <div class="controls">
-          <button class="control control--color" data-color="#ff5c5c" aria-label="赤">●</button>
-          <button class="control control--color" data-color="#ffd966" aria-label="黄色">●</button>
-          <button class="control control--color" data-color="#6bd58c" aria-label="緑">●</button>
+          <div class="controls__group controls__group--modes" role="group" aria-label="あそびを選ぶ">
+            <button class="control control--mode" data-mode="draw" aria-pressed="true">おえかき</button>
+            <button class="control control--mode" data-mode="coloring" aria-pressed="false">ぬりえ</button>
+          </div>
+          <div class="controls__group controls__group--colors" role="group" aria-label="色を選ぶ">
+            <button class="control control--color" data-color="#ff5c5c" aria-label="赤">●</button>
+            <button class="control control--color" data-color="#ffd966" aria-label="黄色">●</button>
+            <button class="control control--color" data-color="#6bd58c" aria-label="緑">●</button>
+          </div>
         </div>
       </header>
-      <section class="canvas-wrapper">
+      <section class="canvas-wrapper" id="draw-wrapper">
         <canvas id="paint-canvas" role="img" aria-label="おえかきキャンバス"></canvas>
+      </section>
+      <section class="coloring-wrapper" id="coloring-wrapper" hidden aria-hidden="true">
+        <svg id="coloring-book" viewBox="0 0 400 400" role="img" aria-label="ぬりえ">
+          <rect x="0" y="0" width="400" height="220" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <rect x="0" y="220" width="400" height="180" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <polygon points="120,160 200,80 280,160" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></polygon>
+          <rect x="140" y="160" width="120" height="120" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <rect x="180" y="200" width="40" height="80" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <rect x="150" y="195" width="30" height="30" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <rect x="220" y="195" width="30" height="30" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <circle cx="320" cy="80" r="40" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></circle>
+          <rect x="60" y="180" width="40" height="120" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></rect>
+          <circle cx="80" cy="150" r="60" class="coloring-outline" data-default-fill="#ffffff" fill="#ffffff"></circle>
+        </svg>
       </section>
       <footer class="app__footer">
         <button class="control control--hidden" id="grown-up" aria-hidden="true"></button>

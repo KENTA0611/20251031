@@ -36,6 +36,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .app__title {
@@ -46,7 +47,14 @@ body {
 
 .controls {
   display: flex;
-  gap: clamp(0.5rem, 2vw, 1rem);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.controls__group {
+  display: flex;
+  gap: clamp(0.4rem, 2vw, 0.8rem);
 }
 
 .control {
@@ -73,6 +81,21 @@ body {
   line-height: 1;
 }
 
+.control--mode {
+  width: auto;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
+  background: #e0e7ff;
+  color: #312e81;
+  min-width: clamp(6rem, 25vw, 8rem);
+}
+
+.control--mode[aria-pressed="true"] {
+  background: #6366f1;
+  color: #fff;
+}
+
 .canvas-wrapper {
   flex: 1;
   background: #f9fafb;
@@ -87,6 +110,39 @@ body {
   height: 100%;
   touch-action: none;
   display: block;
+}
+
+.coloring-wrapper {
+  flex: 1;
+  background: #f9fafb;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+#coloring-book {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  touch-action: manipulation;
+}
+
+.coloring-outline {
+  stroke: #1f2937;
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: #ffffff;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.coloring-outline:active,
+.coloring-outline:focus-visible {
+  filter: brightness(0.95);
+  outline: none;
 }
 
 .control--hidden {
@@ -132,6 +188,17 @@ body {
   .controls {
     flex: 1;
     justify-content: flex-end;
+    gap: 0.6rem;
+  }
+
+  .controls__group--modes {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .controls__group--colors {
+    order: 1;
   }
 
   .control {
@@ -143,5 +210,9 @@ body {
     gap: 0.5rem;
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+
+  .coloring-outline {
+    stroke-width: 8;
   }
 }

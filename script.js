@@ -1,6 +1,10 @@
 const canvas = document.getElementById("paint-canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 const colorButtons = document.querySelectorAll(".control--color");
+const modeButtons = document.querySelectorAll(".control--mode");
+const drawWrapper = document.getElementById("draw-wrapper");
+const coloringWrapper = document.getElementById("coloring-wrapper");
+const coloringShapes = document.querySelectorAll("#coloring-book [data-default-fill]");
 const grownUpButton = document.getElementById("grown-up");
 const grownUpMenu = document.getElementById("grown-up-menu");
 const clearButton = document.getElementById("clear-button");
@@ -13,6 +17,7 @@ let currentColor = "#ff5c5c";
 let fadeEnabled = false;
 let lastPoint = null;
 let touchCount = 0;
+let currentMode = "draw";
 
 const POINTER_ID = "primary";
 
@@ -66,6 +71,10 @@ const getPoint = (event) => {
 const clearCanvas = () => {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  coloringShapes.forEach((shape) => {
+    const base = shape.dataset.defaultFill || "#ffffff";
+    shape.setAttribute("fill", base);
+  });
 };
 
 const fadeOut = () => {
@@ -92,6 +101,46 @@ const handlePointerMove = (event) => {
 const handlePointerUp = (event) => {
   event.preventDefault();
   stopDrawing();
+};
+
+const setMode = (mode) => {
+  if (currentMode === mode) return;
+  currentMode = mode;
+
+  modeButtons.forEach((button) => {
+    const isActive = button.dataset.mode === mode;
+    button.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+
+  if (mode === "draw") {
+    drawWrapper.removeAttribute("hidden");
+    drawWrapper.removeAttribute("aria-hidden");
+    coloringWrapper.setAttribute("hidden", "");
+    coloringWrapper.setAttribute("aria-hidden", "true");
+  } else {
+    coloringWrapper.removeAttribute("hidden");
+    coloringWrapper.removeAttribute("aria-hidden");
+    drawWrapper.setAttribute("hidden", "");
+    drawWrapper.setAttribute("aria-hidden", "true");
+    stopDrawing();
+  }
+};
+
+const handleShapeFill = (event) => {
+  if (event && typeof event.preventDefault === "function") {
+    event.preventDefault();
+  }
+  if (currentMode !== "coloring") return;
+  const target = event.currentTarget;
+  target.setAttribute("fill", currentColor);
+  playSound();
+};
+
+const handleShapeKey = (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    handleShapeFill(event);
+  }
 };
 
 const handleTouchStart = (event) => {
@@ -129,9 +178,16 @@ const bindEvents = () => {
   colorButtons.forEach((button) => {
     const color = button.dataset.color;
     button.style.color = color;
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
       currentColor = color;
       playSound();
+    });
+  });
+
+  modeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      setMode(button.dataset.mode);
     });
   });
 
@@ -164,6 +220,20 @@ const bindEvents = () => {
     if (!soundToggle.checked) {
       sound.pause();
     }
+  });
+
+  const supportsPointer = window.PointerEvent !== undefined;
+
+  coloringShapes.forEach((shape) => {
+    shape.setAttribute("tabindex", "0");
+    if (supportsPointer) {
+      shape.addEventListener("pointerdown", handleShapeFill);
+    } else {
+      shape.addEventListener("touchstart", handleShapeFill, { passive: false });
+      shape.addEventListener("mousedown", handleShapeFill);
+      shape.addEventListener("click", handleShapeFill);
+    }
+    shape.addEventListener("keydown", handleShapeKey);
   });
 };
 
